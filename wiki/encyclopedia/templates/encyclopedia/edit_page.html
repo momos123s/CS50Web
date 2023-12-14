@@ -1,0 +1,19 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title%} new wiki page {% endblock %}
+
+{% block body%}
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="formGroupExampleInput" class="form-label">Title Of Page: </label>
+            <input type="text" class="form-control" id="formGroupExampleInput" name = "PAGETITLE" style="width: 80%;" value = "{{page_title}}">
+        </div>
+        <div class="mb-3">
+            <textarea placeholder=" Add Page content" name = "CONTENT">{{content}}</textarea>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-secondary">Save Changes</button>
+        </div>
+    </form>
+{% endblock %}
