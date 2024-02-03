@@ -1,0 +1,11 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %} winner: {{bid.bidderID}} !!   {% endblock %}
+
+{% block body %}
+    
+    <h1> Congrats to {{bid.bidderID}} FOR HAVING A BID OF {{bid.amountOfMoney}}<h1>
+
+    
+    <img src = "https://i.pinimg.com/originals/d0/09/67/d009678eb5b1658468704f51bfc11173.gif" alt="celebration" />
+{% endblock%}
