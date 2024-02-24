@@ -1,0 +1,111 @@
+.flex-container {
+  display: flex;
+  height: 550px;
+  padding: 0px 0px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.flex-container .search-bar {
+  display: flexbox;
+  width: 582px;
+  height: 46px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: lightgrey;
+  border-radius: 18px;
+}
+.flex-container #google-logo {
+  position: relative;
+  left: 150px;
+  bottom: 20px;
+  width: 272px;
+  height: 92px;
+}
+.flex-container .button-group {
+  display: flexbox;
+  position: relative;
+  left: 150px;
+  top: 25px;
+}
+.flex-container .button-group #im-feeling-lucky {
+  background-color: whitesmoke;
+  border: none;
+  font-size: small;
+  height: 36px;
+  width: 142px;
+}
+.flex-container .button-group #search-button {
+  background-color: whitesmoke;
+  border: none;
+  font-size: small;
+  height: 36px;
+  width: 127px;
+}
+.flex-container .search-box {
+  position: relative;
+  left: 40px;
+  top: 10px;
+  width: 443px;
+  height: 28px;
+  border: none;
+  border-color: none;
+}
+.flex-container .search-box:focus {
+  outline: none;
+}
+
+.right-flex {
+  display: flex;
+  position: fixed;
+  top: 0;
+}
+.right-flex #image-search {
+  position: fixed;
+  right: 150px;
+}
+.right-flex #advanced-search {
+  position: fixed;
+  right: 0px;
+}
+
+.search-container {
+  display: flex;
+}
+
+#search-heading {
+  font-size: 20px;
+  color: rgb(212, 18, 18);
+  font-weight: 380;
+}
+
+#search-logo {
+  width: 80px;
+  height: 27px;
+}
+
+.advanced-form {
+  display: flex;
+}
+
+.advanced-textbox {
+  width: 572px;
+  height: 29px;
+  font-size: 16px;
+  border: 1px solid black;
+}
+
+input:focus {
+  outline-color: rgb(22, 164, 241);
+  outline-width: 1px;
+}
+
+.left-p {
+  font-size: 13px;
+}
+
+.right-p {
+  font-size: 11px;
+}
+
+/*# sourceMappingURL=styles.css.map */
