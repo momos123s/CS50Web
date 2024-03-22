@@ -72,37 +72,104 @@
 }
 .search-container{
     display: flex;
-
+    flex-wrap: wrap;
+    padding: 0;
+    margin-bottom: 50px;
+    border-style: solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-width: 0.1px;
+    border-color: rgb(241, 240, 240);
 }
 
 #search-heading{
     font-size: 20px;
-    color: rgb(212, 18, 18);
+    color: #d93025;
     font-weight:380;
+    position: relative;
+    top:90px;
+    right: 30px;
+    padding-bottom: 100px;
 
 }
   #search-logo{
-        width:80px;
-        height:27px;
+        position: relative;
+        top: 20px;
+        left: 20px;
+        width:74px;
+        height:24px;
     }
-.advanced-form{
-    display: flex;
-    
-}
 
-.advanced-textbox{
-    width: 572px;
-    height: 29px;
-    font-size: 16px;
-    border: 1px solid black;
-    }
-input:focus{
-    outline-color: rgb(22, 164, 241);
-    outline-width: 1px;
-}
+
+
+
+
 .left-p{
     font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    flex-wrap: wrap;
+    color: #222222;
+    margin-top:16px;
+    //padding-right:182px; /* Adjust spacing between text boxes */
+    width: 182px;
 }
 .right-p{
     font-size:11px;
+    color: #555555;
+    margin-top: 16px;
+    margin-left: 8px;
+
+}
+.advanced-title{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    margin-top:2px;
+    margin-left: 50px;
+}
+.advanced-box {
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+    width: 80%; 
+    margin: 0px; 
+}
+
+
+.advanced-txtbox {
+    display: flex; 
+    align-items: center;
+    margin: 0 50px;
+    
+}
+.advanced-txtbox > input:focus 
+{
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0px;
+}
+
+
+.adv-txtbx {
+    width: 572px; 
+    height: 29px;
+    border-style: solid;
+    border-radius: 0px;
+    border-width: 1px;
+}
+.adv-bttn{
+    min-width:120px;
+    height: 30px;
+    background-color: #4d90fe;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 2px;
+    border-color: #4d90fe;
+    padding: 0 12px;
+    margin: 10 0 px;
+    position: relative;
+    left:682px;
+    top: 10px;
 }

@@ -10,20 +10,25 @@
 </head>
 <body>
     <div class = "flex-container">
-        <form action="https://google.com/search">
+        <form action="https://google.com/search" method="get">
             <div id = "main-logo">
                 <img src="/image/Google_Images_2015_logo.svg.png" alt="logo of google.com" id="google-logo"/>
             </div>
             <div class = "search-bar">
-               <input type="text" autofocus class ="search-box"/> 
+                <input type="hidden" name="tbm" value="isch"/>
+               <input type="text" name="q" class ="search-box"/> 
             </div>                         
         </form>
     </div>
-        <div class = "right-flex">
-            <div id = "advanced-search">
-                <a href = "/index.html">Google-search</a>
-            </div>       
+    <div class = "right-flex">   
+        <div id = "image-search">
+            <a href = "/advanced search.html">Advanced Search</a>
         </div>
-    
+        <div id = "advanced-search">
+            <a href="/index.html">Google  Search</a>
+        </div>           
+    </div>
+</div>
+   
 </body>
 </html>
