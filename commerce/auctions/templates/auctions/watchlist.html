@@ -3,10 +3,7 @@
 {%block title%} Watchlist {% endblock%}
 
 {% block body%}
-    {% for item in watchlist %}
-        {{ item.itemId }}
-        {% for related_item in item.itemId.all %}
-            {{ related_item.field }}
-        {% endfor %}
+    {% for items in related_item%}
+        {{items.title}}
     {% endfor %}
 {% endblock %}

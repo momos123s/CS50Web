@@ -24,14 +24,17 @@ def index(request):
 @login_required
 def watchlist(request):   
     watch = Watchlist.objects.all()
-
+    userWatchlist = watch.filter(userID = request.user)
+    for item in userWatchlist:
+        print(item.itemId.all())
+        for rel_item in item.itemId.all():
+            print(rel_item)
 
     if request.method == "POST":
         userWatchlist = Watchlist()
         listingID = request.POST.get('listingID','')
         #check to see if user adds to watchlist
-        if 'isOnWatchlist' in request.POST and User.is_authenticated:
-            
+        if 'isOnWatchlist' in request.POST and User.is_authenticated:         
             userWatchlist.userID = request.user
             userWatchlist.save()
             userWatchlist.itemId.set = listingID
@@ -42,6 +45,7 @@ def watchlist(request):
             return HttpResponse("successfully deleted!")
         
     else:
+    
         return render(request,"auctions/watchlist.html", {
             'watchlist':watch
         })
@@ -96,17 +100,20 @@ def listing_page(request, pageNumber):
         
         #validate forms 
         if bidform.is_valid() and User.is_authenticated and comment.errors:
-            bidform.instance.bidderID = request.user
-            bidform.instance.listID = CreateListing.objects.get(listingID=pageNumber)
-            #save and refresh
-            bidform.save()
-            #update create list (poor data base design[many-to-many should have been used])
-            createUpdate = CreateListing.objects.get(listingID = pageNumber)
-            createUpdate.starting_bid = bidform.instance.amountOfMoney
-            createUpdate.save()
-            return HttpResponseRedirect(reverse("index"))
-            #else:
-                #return HttpResponse("your bid is too small to be place. bid must be greater then current bid")
+            #check to see if the bid is high engouh 
+            if bidform.instance.amountOfMoney > highestbid:
+                bidform.instance.bidderID = request.user
+                bidform.instance.listID = CreateListing.objects.get(listingID=pageNumber)
+                #save and refresh
+                bidform.save()
+                #update create list (poor data base design[many-to-many should have been used])
+                createUpdate = CreateListing.objects.get(listingID = pageNumber)
+                createUpdate.starting_bid = bidform.instance.amountOfMoney
+                createUpdate.save()
+                return HttpResponseRedirect(reverse("index"))
+            else:
+                return HttpResponse("your bid id too small")
+
         
         #validate forms
         elif comment.is_valid() and User.is_authenticated and bidform.errors :

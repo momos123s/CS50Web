@@ -69,4 +69,4 @@ class Categories(models.Model):
 class CategoriesForm(ModelForm):
     class Meta:
         model = Categories
-        fields = ["name"]
+        fields = ["name"]  
