@@ -7,9 +7,22 @@ class User(AbstractUser):
     pass
 
 class CreateListing(models.Model):
-    
+    catergories =     CATEGORIES = [
+        ("Food and Beverage", "Food and Beverage"),
+        ("Electronics and Tech", "Electronics and Tech"),
+        ("Home and Furniture", "Home and Furniture"),
+        ("Fashion and Accessories", "Fashion and Accessories"),
+        ("Health and Beauty", "Health and Beauty"),
+        ("Entertainment", "Entertainment"),
+        ("Sports and Outdoors", "Sports and Outdoors"),
+        ("Toys and Hobbies", "Toys and Hobbies"),
+        ("Automotive", "Automotive"),
+        ("Services", "Services"),
+        ("Miscellaneous", "Miscellaneous"),
+    ]
     creatorID = models.ForeignKey("User", on_delete = models.CASCADE)
     listingID = models.AutoField(primary_key=True)
+    labels = models.CharField(max_length=100, choices=catergories,default="MISC")
     title = models.CharField(max_length = 30)
     description = models.TextField(null = True)
     starting_bid = models.PositiveBigIntegerField(null = True)
@@ -20,11 +33,12 @@ class CreateListing(models.Model):
 class CreateListing_Form(ModelForm):
     class Meta:
         model = CreateListing
-        fields = ["title", "description", "starting_bid", "picture"]
+        fields = ["title", "description", "starting_bid", "picture","labels"]
         widgets = {'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'starting_bid': forms.NumberInput(attrs={'class': 'form-control'}),
-            'picture': forms.URLInput(attrs={'class': 'form-control', 'placeholder':'url for picture'}),}
+            'picture': forms.URLInput(attrs={'class': 'form-control', 'placeholder':'url for picture'}),
+            }
 
 
 class Bids(models.Model):
@@ -61,12 +75,3 @@ class Watchlist(models.Model):
     itemId = models.ManyToManyField("CreateListing")
     userID = models.ForeignKey("User", on_delete=models.CASCADE)
 
-class Categories(models.Model):
-    listingIDs = models.ManyToManyField("CreateListing")
-    categoryID = models.AutoField( primary_key=True)
-    name = models.CharField(max_length=50)
-
-class CategoriesForm(ModelForm):
-    class Meta:
-        model = Categories
-        fields = ["name"]  
