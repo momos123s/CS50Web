@@ -11,14 +11,14 @@
 <body>
     <div class="search-container">
         <div>
-            <img id="search-logo" src="/image/googleLogo.png" alt ="google.com logo"/>
+            <img id="search-logo" src="image/googleLogo.png" alt ="google.com logo"/>
         </div>
         <div class = "right-flex">   
             <div id = "image-search">
-                <a href = "/image search.html">Image Search</a>
+                <a href = "///home/molemo/Documents/CS50Web/search/image search.html">Image Search</a>
             </div>
             <div id = "advanced-search">
-                <a href="/index.html">Google  Search</a>
+                <a href="///home/molemo/Documents/CS50Web/search/index.html">Google  Search</a>
             </div>           
         </div>
         <div>
@@ -28,23 +28,23 @@
     <!--box for the search boxes-->
 
     <p class="advanced-title">Find Pages With...</p>
-    <form action="">
+    <form action="https://www.google.co.za/advanced_search?hl=en&fg=1">
     <div class="advanced-box">   
         <div class  = "advanced-txtbox">
             <p class="left-p">words like these:</p>
-            <input type="textbox" class="adv-txtbx"/>
+            <input type="textbox" name="q" class="adv-txtbx"/>
         </div>
         <div class  = "advanced-txtbox">
             <p class="left-p">this exact word or phrase:</p>
-            <input type="textbox" class="adv-txtbx"/> 
+            <input type="textbox" name="as_epq"class="adv-txtbx"/> 
         </div>
         <div class  = "advanced-txtbox">
             <p class="left-p">any of these words:</p>
-            <input type="textbox" class="adv-txtbx"/> 
+            <input type="textbox" name="as_oq" class="adv-txtbx"/> 
         </div>
         <div class  = "advanced-txtbox">
             <p class="left-p">none of these words:</p>
-            <input type="textbox" class="adv-txtbx"/>    
+            <input type="textbox" name="as_eq" class="adv-txtbx"/>    
         </div>
     </div>
     <button type="submit" class="adv-bttn">Advanced search</button>

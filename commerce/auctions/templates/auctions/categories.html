@@ -3,5 +3,10 @@
 {% block title%} categories {% endblock %}
 
     {%block body%}
-
+    {% csrf_token %}
+    <div class="d-grid gap-2">
+        {% for value in categorydict.values %} 
+       <a href="{% url 'selectedcategory' value %}" class="btn btn-primary" >{{value}}</a>
+        {% endfor %}
+    </div>
     {% endblock %}

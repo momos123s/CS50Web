@@ -4,70 +4,64 @@
   padding: 0px 0px;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-}
-.flex-container .search-bar {
-  display: flexbox;
-  width: 582px;
-  height: 46px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: lightgrey;
-  border-radius: 18px;
-}
-.flex-container #google-logo {
-  position: relative;
-  left: 150px;
-  bottom: 20px;
-  width: 272px;
-  height: 92px;
-}
-.flex-container .button-group {
-  display: flexbox;
-  position: relative;
-  left: 150px;
-  top: 25px;
-}
-.flex-container .button-group #im-feeling-lucky {
-  background-color: whitesmoke;
-  border: none;
-  font-size: small;
-  height: 36px;
-  width: 142px;
-}
-.flex-container .button-group #search-button {
-  background-color: whitesmoke;
-  border: none;
-  font-size: small;
-  height: 36px;
-  width: 127px;
-}
-.flex-container .search-box {
-  position: relative;
-  left: 40px;
-  top: 10px;
-  width: 443px;
-  height: 28px;
-  border: none;
-  border-color: none;
-}
-.flex-container .search-box:focus {
-  outline: none;
-}
+  align-items: center; }
+  .flex-container .search-bar {
+    display: flexbox;
+    width: 582px;
+    height: 46px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: lightgrey;
+    border-radius: 18px; }
+  .flex-container #google-logo {
+    position: relative;
+    left: 150px;
+    bottom: 20px;
+    width: 272px;
+    height: 92px; }
+  .flex-container .button-group {
+    display: flexbox;
+    position: relative;
+    left: 150px;
+    top: 25px; }
+    .flex-container .button-group #im-feeling-lucky {
+      background-color: whitesmoke;
+      color: #222222;
+      text-decoration: none;
+      border: none;
+      font-size: small;
+      height: 36px;
+      width: 142px; }
+    .flex-container .button-group #im-feeling-lucky > a {
+      text-decoration: none;
+      color: #222222; }
+    .flex-container .button-group #search-button {
+      background-color: whitesmoke;
+      border: none;
+      font-size: small;
+      height: 36px;
+      width: 127px; }
+  .flex-container .search-box {
+    position: relative;
+    left: 40px;
+    top: 10px;
+    width: 443px;
+    height: 28px;
+    border: none;
+    border-color: none; }
+  .flex-container .search-box:focus {
+    outline: none; }
 
 .right-flex {
   display: flex;
   position: fixed;
-  top: 0;
-}
-.right-flex #image-search {
-  position: fixed;
-  right: 150px;
-}
-.right-flex #advanced-search {
-  position: fixed;
-  right: 0px;
-}
+  top: 0; }
+  .right-flex #image-search {
+    position: fixed;
+    right: 150px; }
+  .right-flex #advanced-search {
+    position: fixed;
+    right: 0px; }
 
 .search-container {
   display: flex;
@@ -79,8 +73,7 @@
   border-left: 0;
   border-right: 0;
   border-width: 0.1px;
-  border-color: rgb(241, 240, 240);
-}
+  border-color: #f1f0f0; }
 
 #search-heading {
   font-size: 20px;
@@ -89,16 +82,14 @@
   position: relative;
   top: 90px;
   right: 30px;
-  padding-bottom: 100px;
-}
+  padding-bottom: 100px; }
 
 #search-logo {
   position: relative;
   top: 20px;
   left: 20px;
   width: 74px;
-  height: 24px;
-}
+  height: 24px; }
 
 .left-p {
   font-size: 13px;
@@ -106,49 +97,42 @@
   flex-wrap: wrap;
   color: #222222;
   margin-top: 16px;
-  width: 182px;
-}
+  width: 182px; }
 
 .right-p {
   font-size: 11px;
   color: #555555;
   margin-top: 16px;
-  margin-left: 8px;
-}
+  margin-left: 8px; }
 
 .advanced-title {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   margin-top: 2px;
-  margin-left: 50px;
-}
+  margin-left: 50px; }
 
 .advanced-box {
   display: flex;
   flex-direction: column;
   width: 80%;
-  margin: 0px;
-}
+  margin: 0px; }
 
 .advanced-txtbox {
   display: flex;
   align-items: center;
-  margin: 0 50px;
-}
+  margin: 0 50px; }
 
 .advanced-txtbox > input:focus {
   border-style: solid;
   border-width: 1px;
-  border-radius: 0px;
-}
+  border-radius: 0px; }
 
 .adv-txtbx {
   width: 572px;
   height: 29px;
   border-style: solid;
   border-radius: 0px;
-  border-width: 1px;
-}
+  border-width: 1px; }
 
 .adv-bttn {
   min-width: 120px;
@@ -164,7 +148,6 @@
   margin: 10 0 px;
   position: relative;
   left: 682px;
-  top: 10px;
-}
+  top: 10px; }
 
 /*# sourceMappingURL=styles.css.map */

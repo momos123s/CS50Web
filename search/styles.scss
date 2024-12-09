@@ -30,10 +30,16 @@
        top: 25px;
     #im-feeling-lucky{
         background-color: whitesmoke;
+        color: #222222;
+        text-decoration: none;
         border: none;
         font-size: small;
         height: 36px;
         width:142px;
+    }
+    #im-feeling-lucky > a{
+        text-decoration: none;
+        color: #222222;
     }
     #search-button{
         background-color: whitesmoke;

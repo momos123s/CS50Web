@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import User, CreateListing, CreateListing_Form, Comments, CommentForm,Bids, BidsForm, Watchlist,Categories,CategoriesForm
+from .models import User, CreateListing, CreateListing_Form, Comments, CommentForm,Bids, BidsForm, Watchlist
 from django.db.models import Max
 from django.views.decorators.csrf import csrf_protect
 
@@ -14,7 +14,22 @@ from django.views.decorators.csrf import csrf_protect
 @csrf_protect
 @login_required
 def categories(request):
-    return render(request,"auctions/categories.html")
+    #return options for catergories
+    categorylist = CreateListing.CATEGORIES
+    categorydict = dict(categorylist)
+    print(categorydict)
+    return render(request,"auctions/categories.html", {"categorydict":categorydict})
+
+def selectedcat(request, category):
+    #get the catergory and return results
+    print(category)
+    catList = CreateListing.objects.filter(labels = category)
+    print(catList)   
+    return render(request,"auctions/selectcategory.html", {"catList":catList})
+    
+
+#return error if catergory doesnt exist
+
 
 def index(request):
     listings = CreateListing.objects.all()
@@ -23,32 +38,50 @@ def index(request):
 @csrf_protect
 @login_required
 def watchlist(request):   
-    watch = Watchlist.objects.all()
-    userWatchlist = watch.filter(userID = request.user)
-    for item in userWatchlist:
-        print(item.itemId.all())
-        for rel_item in item.itemId.all():
-            print(rel_item)
 
     if request.method == "POST":
-        userWatchlist = Watchlist()
         listingID = request.POST.get('listingID','')
-        #check to see if user adds to watchlist
-        if 'isOnWatchlist' in request.POST and User.is_authenticated:         
-            userWatchlist.userID = request.user
-            userWatchlist.save()
-            userWatchlist.itemId.set = listingID
-            return HttpResponse("successfully added to list!") 
-        else:
-    # Check to see if user is deleting from watchlist
-            n = Watchlist.objects.filter(itemId = listingID).delete()
-            return HttpResponse("successfully deleted!")
-        
-    else:
-    
+        #item to add or delete
+        itemToAddOrDel = CreateListing.objects.get(listingID = listingID)
+        try:
+            #try to get users watchlist
+            userWatchlist = Watchlist.objects.get(userID = request.user)
+            
+            #add item to users watchlist
+            if userWatchlist != None and User.is_authenticated:
+                #check if item is in users watchlist
+                try:
+                    itemInWatchList = Watchlist.objects.get(listingID =listingID)
+                    itemInWatchList.itemId.remove(itemToAddOrDel)
+                    HttpResponse("item has been removed")
+                    return HttpResponseRedirect("/")
+
+                #add item if its not in in watchlist
+                except:
+                    userWatchlist.itemId.add(itemToAddOrDel)
+                    HttpResponse("item has been added to watchlist ")
+                    return HttpResponseRedirect("/")
+
+        except:
+            #creates new watchlist for user and adds item
+            newWatchlist = Watchlist()
+            newWatchlist.userID = request.user
+            newWatchlist.save()
+            newWatchlist.itemId.add(itemToAddOrDel)
+            HttpResponse("item successfully added to watchlist")
+            return HttpResponseRedirect("/")
+
+
+    try:
+        #return users watchlist 
+        userWatchlist = Watchlist.objects.get(userID = request.user)
+        print(userWatchlist.itemId.values())
+        print(userWatchlist.userID)
         return render(request,"auctions/watchlist.html", {
-            'watchlist':watch
+            'watchlist':userWatchlist.itemId.values
         })
+    except:
+        return HttpResponse("Your watchlist is completly empty")
     
 
 @login_required
@@ -58,7 +91,6 @@ def listing_page(request, pageNumber):
     #get the page
     listing = CreateListing.objects.filter(listingID = pageNumber)
     
-
 
     #form for bidding and comment section
     bidform = BidsForm()
@@ -202,7 +234,7 @@ def create_listing(request):
     
     form = CreateListing_Form()
     newBid = Bids()
-    categoryform = CategoriesForm()
+  
     
     if request.method == "POST":
         # get post data form 
@@ -224,5 +256,5 @@ def create_listing(request):
             return HttpResponse(form.errors)
     
     else:
-        return render(request,"auctions/createlisting.html", {'form':form, 'catergory':categoryform})
+        return render(request,"auctions/createlisting.html", {'form':form, })
 
