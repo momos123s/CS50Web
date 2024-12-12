@@ -3,7 +3,7 @@ body{
    /* background-image: 
     radial-gradient(circle, white, black,grey,black)
     */
-    background-color: #0D0C1D;
+    background-color: #ffffff;
 }
 .main-nav{
     background-color:#A69CAC;
@@ -18,7 +18,7 @@ body{
 /*for the post forum*/
 .post-form 
 {
-    border: solid, white, 1px;
+    border: solid, rgb(0, 0, 0), 1px;
     margin-right: 800px;
     padding:20px;
     
@@ -28,7 +28,7 @@ body{
 {
     margin-bottom: 1em;
     margin-bottom: 1em;
-    color: white;
+    color: rgb(19, 16, 16);
 }
 #sub-Button
 {
@@ -38,17 +38,11 @@ body{
 /* this is for the posts*/
 .main-content
 {
-    display:flex;
-    flex-direction: column;
-    flex-shrink: initial;
-    align-items: center;
-    position: relative;
-    left: 600px;
-    background-color: #161B33;
+ 
+    background-color: #ffffff;
     width: 50em;
-    border: 2px solid #F1DAC4;
-    height: fit-content;
-    color: #F1DAC4;
+
+    color: #000000;
 
 }
 .individual-post
@@ -75,6 +69,6 @@ body{
 }
 .likeboxArea
 {
-    background-color: #161B33;
+    background-color: #ffffff;
 }
 

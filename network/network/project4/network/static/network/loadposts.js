@@ -37,38 +37,19 @@ function ShowPost() {
         {posts.posts && posts.posts.map((post, index) => (
             <div className="individual-post" key={post.fields.postid}>
                 {console.log(post.fields.id)}
-                <div className="top-section">
-                <div className="heading">
-                    <h3 className="header">{post.fields.heading}</h3>
-                </div>
-
-                <div className="follow-section">
-                    <a onClick={() => update_follows(post.fields.userID)}>follow</a>
-                </div>
-                </div>
-
-                <div className="mid-section">
-                    <div className="media">how to make the like 
-                            {post.fields.mediaUpload && mediaDector(post.fields.mediaUpload)}
-                    </div>
-
-                    <div className="description">
-                        <p>{post.fields.description}</p> <a href="/edit">edit</a>
-                    </div>
-                </div>
-
-                <div className="bottom-section">           
-                    <div className="likeboxArea">
-                        <button className="like_button" onClick={() => handlelikeButton(posts.pk,true,heart,posts.p) }>
-                            {handlelikeButton(posts.pk,null)}
-                        </button>
-                    </div>
-                    <div className="timestamp">
+                <div class="card">
+                 
+                    <div class="card-body">
+                        <h5 class="card-title">{post.fields.heading}</h5>
+                        <p class="card-text">{post.fields.description}</p>
                         <p>{post.fields.timestamp}</p>
+                        <div className="likeboxArea">
+                            <button className="like_button" onClick={() => handlelikeButton(posts.pk,true,heart,posts.p) }>
+                                {handlelikeButton(posts.pk,null)}
+                            </button>
+                        </div>
                     </div>
                 </div>
-
-
             </div>       
         ))}
 

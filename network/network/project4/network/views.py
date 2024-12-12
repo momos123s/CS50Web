@@ -121,6 +121,7 @@ def update_likes(request):
         liked = data.get("istrue")
         postid = data.get("id")
         userID =request.user
+        #check if 
     return HttpResponse("")
 
 
@@ -200,15 +201,18 @@ def new_post(request):
         #retrieve post data 
         data = json.loads(request.body)
         post_data = list(data.values())
-        print(post_data[2])
+        print(post_data[0])
         #place items in database
         create_post = Post()
         create_post.userID = request.user
-        create_post.heading = post_data[0]
-        create_post.description = post_data[2]
-        create_post.mediaUpload = post_data[1]
+        create_post.description = post_data[1]
+        create_post.mediaUpload = post_data[0]
         create_post.save()
         create_post.save()
+        like = Likes()
+        like.postID = create_post
+        like.UserIDs = None
+        like.save()
         print(post_data)
         return JsonResponse({"success":"True"}, status =200 )
     else: 
