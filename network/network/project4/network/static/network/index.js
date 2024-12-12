@@ -22,12 +22,9 @@ function PostForm()
                     </div>
                     <div className = "mb-3"> 
                         <label className="post-label">descritption:</label>
-                        <input type="text" className="description form-control" value={description} onChange={d => setDescription(d.target.value)}></input>
+                        <textarea class=" description form-control" id="" rows="3" value={description} onChange={d=>setDescription(d.target.value)}></textarea>
                     </div>
-                    <div className = "mb-3">
-                        <label className="post-label">tags:</label>
-                        <input type="text" className="tags form-control" value={tags} onChange={t => setTags(t.target.value)}></input>
-                    </div>
+         
                     <button type="button" id="sub-Button"className="btn btn-warning" onClick={s => new_post(heading,description,file,tags)}>create post</button>
                 </div>
             </form>

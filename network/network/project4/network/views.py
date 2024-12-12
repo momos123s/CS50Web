@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.core.paginator import Paginator
 import json
-from .models import Post,Comments,Tags,User,Profile,Likes
+from .models import Post,User,Profile,Likes
 from django.core import serializers
 
 
@@ -32,8 +32,8 @@ def load_profiles(request):
     print(userName)  
     data = User.objects.filter(username = userName )  
     data = data.values().first()
-    followers = Profile.objects.filter(profileID = userName)
-    following = Profile.objects.followers
+    followers = Profile.objects.filter(user = userName)
+    following = Profile.objects.following
     follower_count = Profile.objects.count()
     data.update({"followers count":follower_count, "followers":followers})
     print(following)
@@ -56,7 +56,7 @@ def follow_view(request):
         followersid = int(data.get("followid"))
         #put into data base
         user2Follow = Profile()
-        user2Follow.profileID = request.user
+        user2Follow.user = request.user
         user2Follow.following = followersid
         user2Follow.save()
         return JsonResponse({"success":"following user"})
@@ -67,7 +67,7 @@ def follow_view(request):
 @csrf_exempt
 def follow_posts(request):
     #find users follwers 
-    followersPosts = Profile.objects.filter(profileID = request.user)
+    followersPosts = Profile.objects.filter(user = request.user)
     print(followersPosts.values())
     posts = Post.objects 
     profileNums = len(followersPosts)
@@ -78,7 +78,7 @@ def follow_posts(request):
         if i == profileNums:
             break
         try:
-            postCollection.update( {str(i): str((posts.filter(userID = post.profileID).values()[i]))})
+            postCollection.update( {str(i): str((posts.filter(userID = post.user).values()[i]))})
         except:
             print("USER IS NOT FOLLOWING ANYONE!!")
         i+=1
@@ -121,30 +121,7 @@ def update_likes(request):
         liked = data.get("istrue")
         postid = data.get("id")
         userID =request.user
-
-        #check if users already liked post
-        likes = Likes.objects.get(UserIDs = userID)
-        if likes == None:
-            #create the like 
-            like = Likes()
-            like.postID = postid
-            like.UserIDs = userID
-            like.save()
-            #reurn recount of likes
-            amountOfLikes = Likes.objects.count()
-            print(amountOfLikes)
-            return JsonResponse({"like":"success", "amount of likes": amountOfLikes} )
-        #if users already liked removes like
-        elif likes != None:
-            #deltete users like
-            likes.delete(UserIDs = userID)
-            #return recount of likes
-            amountOfLikes = Likes.objects.count()
-            print(amountOfLikes)
-            return JsonResponse({"unliked":"successful","amount of likes":amountOfLikes})
-        else:
-            return JsonResponse({"status":"unsuccessful"})
-
+    return HttpResponse("")
 
 
 
@@ -204,9 +181,7 @@ def register(request):
         try:
             user = User.objects.create_user(username, email, password)    
             user.save()
-            userProfile = Profile()
-            userProfile.profileID = user
-            userProfile.save()
+
 
         except IntegrityError:
             return render(request, "network/register.html", {
@@ -233,10 +208,7 @@ def new_post(request):
         create_post.description = post_data[2]
         create_post.mediaUpload = post_data[1]
         create_post.save()
-        create_post.tags.set = post_data[3]
         create_post.save()
-        likes = Likes()
-        likes.save()
         print(post_data)
         return JsonResponse({"success":"True"}, status =200 )
     else: 

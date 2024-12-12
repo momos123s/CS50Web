@@ -34,7 +34,7 @@ function update_likes(id, liked,editContent,url) {
     })
     .then(response => response.json)
     .then(result => console.log(result))
-   return console.log(resultup);
+    return console.log("it worked");
 }
 function update_follows(followid) {
     //get checkbox and weather its liked or not
