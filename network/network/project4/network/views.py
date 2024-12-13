@@ -116,13 +116,34 @@ def get_posts(request, page_num):
 def update_likes(request):
 
     if request.method == 'PUT':
+
+        #get front end data 
         data = json.loads(request.body)
-        print(data)
-        liked = data.get("istrue")
         postid = data.get("id")
         userID =request.user
-        #check if 
-    return HttpResponse("")
+
+        #get data from database
+        post = Likes.objects.get(postID = postid)
+        isliked = Likes.objects.filter(postID = postid, UserIDs = userID).exists()
+        print(isliked)
+
+        #check if user has already liked the post
+        if not isliked and request.user.is_authenticated:
+            #like the post 
+            post.UserIDs.add(userID)
+            post.record = post.UserIDs.count()
+            print(post.record)
+            return JsonResponse({""})
+        
+        #check if its liekd and remove like 
+        elif isliked and request.user.is_authenticated:
+            post.UserIDs.remove(userID)
+            post.record = post.UserIDs.count()         
+            print(post.record)
+            return JsonResponse({""})
+        else:
+            return JsonResponse({"error":"something went wrong while trying to add like"})
+
 
 
 
@@ -207,7 +228,6 @@ def new_post(request):
         create_post.userID = request.user
         create_post.description = post_data[1]
         create_post.mediaUpload = post_data[0]
-        create_post.save()
         create_post.save()
         like = Likes()
         like.postID = create_post

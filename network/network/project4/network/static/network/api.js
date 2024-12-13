@@ -26,7 +26,6 @@ function update_likes(id, liked,editContent,url) {
     {
         method:"PUT",
         body : JSON.stringify({
-            istrue :istrue,
             id:id,
             editContent:editContent,
             'Content-type':'application/json'

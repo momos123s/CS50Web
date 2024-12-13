@@ -6,13 +6,13 @@ body{
     background-color: #ffffff;
 }
 .main-nav{
-    background-color:#A69CAC;
-    color: rgb(134, 134, 134);
+    background-color:#000000;
+    color: rgb(255, 255, 255);
 }
 
 .nav-link
 {
-    color: rgb(112, 109, 109);
+    color: rgb(255, 253, 253);
 }
 
 /*for the post forum*/
@@ -21,7 +21,7 @@ body{
     border: solid, rgb(0, 0, 0), 1px;
     margin-right: 800px;
     padding:20px;
-    
+    width: 50em;
 }
 
 .post-label
@@ -38,35 +38,12 @@ body{
 /* this is for the posts*/
 .main-content
 {
- 
     background-color: #ffffff;
     width: 50em;
-
     color: #000000;
+}
 
-}
-.individual-post
-{
-    flex-direction: column;
-    border-bottom:#f7f7f7 5px solid;
-    width: inherit;
 
-}
-.header
-{
-    font-size: 20px;
-    font-family:Georgia, serif; ;
-    text-align: center;
-}
-.top-section
-{
-    display: flex;
-    flex-direction: row;
-}
-.bottom-section
-{
-    flex-direction: column;
-}
 .likeboxArea
 {
     background-color: #ffffff;

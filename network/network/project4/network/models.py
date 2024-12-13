@@ -8,7 +8,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     ProfileID = models.BigAutoField(primary_key=True,unique=True)
     user = models.ForeignKey("User",on_delete=models.CASCADE,related_name="profile")
-    following = models.ForeignKey("User", on_delete=models.CASCADE,related_name="follow" )
+    following = models.ManyToManyField("User", related_name="follow" )
 
 
 class Post(models.Model):
@@ -22,7 +22,7 @@ class Post(models.Model):
 class Likes(models.Model):
     id = models.BigAutoField(primary_key=True,unique=True)
     postID = models.ForeignKey("Post",on_delete=models.CASCADE,null=False)
-    UserIDs = models.ForeignKey("User", on_delete=models.CASCADE,null=True)
+    UserIDs = models.ManyToManyField("User", null=True)
     record = models.PositiveBigIntegerField(default=0)
 
  
