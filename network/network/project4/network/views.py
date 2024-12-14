@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout,get_user_model
 from django.db import IntegrityError
+from django.db.models import F
 from django.http import HttpResponse,JsonResponse, HttpResponseRedirect
 from django.shortcuts import render , get_object_or_404
 from django.urls import reverse
@@ -54,12 +55,19 @@ def follow_view(request):
         #get the user to follows id
         data = json.loads(request.body)
         followersid = int(data.get("followid"))
-        #put into data base
-        user2Follow = Profile()
-        user2Follow.user = request.user
-        user2Follow.following = followersid
-        user2Follow.save()
-        return JsonResponse({"success":"following user"})
+        #check if user has profile
+        user2follow = User.objects.get(id = followersid) 
+        try:
+            profile = Profile.objects.get(user = request.user)
+            #follow the request user
+            profile.following.add(user2follow)
+            print(profile.objects.all().values())
+            print("you are now following user")
+            return JsonResponse({"success":"user was followed"})
+        except:
+            #create a profile for database 
+            return JsonResponse({"success":"user has been followed"})
+
     else:
         return JsonResponse({"error":"An unknow error occured"})
 
@@ -67,16 +75,15 @@ def follow_view(request):
 @csrf_exempt
 def follow_posts(request):
     #find users follwers 
-    followersPosts = Profile.objects.filter(user = request.user)
-    print(followersPosts.values())
+    user = User.objects.get(username = request.user)
+    followersPosts = Profile.objects.filter(user = user)
+    
     posts = Post.objects 
     profileNums = len(followersPosts)
     postCollection = {}
     i = 0
     #use followers profiles to retreive their posts
-    for post in followersPosts:
-        if i == profileNums:
-            break
+    for post in followersPosts and i in range(profileNums):
         try:
             postCollection.update( {str(i): str((posts.filter(userID = post.user).values()[i]))})
         except:
@@ -88,13 +95,12 @@ def follow_posts(request):
 
 @login_required    
 def get_posts(request, page_num):
-    if request.method == 'GET': 
+    if request.method == 'GET':
     
         post_data = Post.objects.all().order_by('timestamp')
-        print(post_data.all().values())
         pag = Paginator(post_data, 10) 
         post = pag.get_page(page_num)
-        print(Post.postID)
+        
         #get profiles of each user who posts
         posts =serializers.serialize('json',post)
         response_data = {
@@ -203,6 +209,9 @@ def register(request):
         try:
             user = User.objects.create_user(username, email, password)    
             user.save()
+            profile = Profile()
+            profile.user = user
+            profile.save()
 
 
         except IntegrityError:
@@ -226,12 +235,13 @@ def new_post(request):
         #place items in database
         create_post = Post()
         create_post.userID = request.user
+        print(request.user)
+        create_post.username = request.user
         create_post.description = post_data[1]
         create_post.mediaUpload = post_data[0]
         create_post.save()
         like = Likes()
         like.postID = create_post
-        like.UserIDs = None
         like.save()
         print(post_data)
         return JsonResponse({"success":"True"}, status =200 )

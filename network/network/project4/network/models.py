@@ -7,13 +7,14 @@ class User(AbstractUser):
 
 class Profile(models.Model):
     ProfileID = models.BigAutoField(primary_key=True,unique=True)
-    user = models.ForeignKey("User",on_delete=models.CASCADE,related_name="profile")
-    following = models.ManyToManyField("User", related_name="follow" )
+    user = models.ForeignKey("User",on_delete=models.CASCADE,related_name="profile",unique=True)
+    following = models.ManyToManyField("User", related_name="follow",null=True )
 
 
 class Post(models.Model):
     userID = models.ForeignKey("User",on_delete=models.CASCADE)
     postID = models.BigAutoField(primary_key=True,unique=True)
+    username = models.CharField(max_length=120,null=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=False)
     mediaUpload = models.FileField(null=True, upload_to='media/')

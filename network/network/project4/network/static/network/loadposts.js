@@ -5,12 +5,12 @@
             return "❤️"+likes;
         }
         else if(buttonClicked && heart == "❤️" ){
-            response = update_likes(postID,true,null,"/update_likes");
+            response = update_likes(postID,null,"/update_likes");
             console.log(response)
             return "❤️"+likes+1;
         }
         else if(buttonClicked && heart == "🤍"){
-            response = update_likes(postID,false,null,"/update_likes");
+            response = update_likes(postID,znull,"/update_likes");
             console.log(response)
             return"🤍" + likes-1;
         }
@@ -41,6 +41,7 @@ function ShowPost() {
                  
                     <div class="card-body">
                         <h5 class="card-title">{post.fields.heading}</h5>
+                        <p class="card-text">{post.fields.username}</p>
                         <p class="card-text">{post.fields.description}</p>
                         <p>{post.fields.timestamp}</p>
                         <div className="likeboxArea">
