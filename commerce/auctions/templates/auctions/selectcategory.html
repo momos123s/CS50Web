@@ -1,12 +1,13 @@
 {% extends "auctions/layout.html" %}
 
-{%block title%} Watchlist {% endblock%}
+
+{%block title%} category {% endblock%}
 
 {%block body %}
 <div class="container" style= "margin:0px">
     <h2>user watchlist</h2>
     <div class="row">
-      {% for items in watchlist %}
+      {% for items in catList %}
         <div class="col-md-6 mb-1">
           <div class="card">
             <img src="{{ items.picture }}" class="card-img-top" alt="{{ items.title }}">
@@ -23,3 +24,4 @@
     </div>
   </div>
 {% endblock %}
+
