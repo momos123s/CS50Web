@@ -19,7 +19,6 @@ body{
 .post-form 
 {
     border: solid, rgb(0, 0, 0), 1px;
-    margin-right: 800px;
     padding:20px;
     width: 50em;
 }

@@ -2,17 +2,27 @@
       function handlelikeButton(postID,buttonClicked, heart,likes){
         
         if(buttonClicked == null){
-            return "❤️"+likes;
+            return(
+                <div>
+                      "🤍 "+ {likes};
+                </div>
+            )
+              
         }
         else if(buttonClicked && heart == "❤️" ){
-            response = update_likes(postID,null,"/update_likes");
-            console.log(response)
-            return "❤️"+likes+1;
+            update_likes(postID,null,"","/update_likes");           
+            return(
+                <div>
+                      "❤️ "+ {likes+1};
+                </div>)
         }
         else if(buttonClicked && heart == "🤍"){
-            response = update_likes(postID,znull,"/update_likes");
-            console.log(response)
-            return"🤍" + likes-1;
+            update_likes(postID,null,"","/update_likes");
+            return(
+                <div>
+                      "🤍"+ {likes-1};
+                </div>
+            )
         }
         else{
             return "something went wrong";
@@ -35,19 +45,19 @@ function ShowPost() {
   return (
     <div className="main-content">   
         {posts.posts && posts.posts.map((post, index) => (
-            <div className="individual-post" key={post.fields.postid}>
-                {console.log(post.fields.id)}
-                <div class="card">
+            <div className="individual-post" key={post.postid}>
+                {console.log(post)}
+                <div className="card">
                  
-                    <div class="card-body">
-                        <h5 class="card-title">{post.fields.heading}</h5>
-                        <p class="card-text">{post.fields.username}</p>
-                        <p class="card-text">{post.fields.description}</p>
-                        <p>{post.fields.timestamp}</p>
+                    <div className="card-body">
+                        <h5 className="card-title">{post.heading}</h5>
+                        <p className="card-text text-start">{post.user}</p>
+                        <p className="card-text">{post.description}</p>
                         <div className="likeboxArea">
-                            <button className="like_button" onClick={() => handlelikeButton(posts.pk,true,heart,posts.p) }>
-                                {handlelikeButton(posts.pk,null)}
-                            </button>
+                            <p className="like_button" onClick={() => handlelikeButton(post.id,true,"❤️",post.like_count) }>
+                                   {`🤍 ${post.likes}`}
+                            </p>
+                            <p className="card-text small">{post.timestamp}</p>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout,get_user_model
 from django.db import IntegrityError
-from django.db.models import F
+from django.db.models import F,Count
 from django.http import HttpResponse,JsonResponse, HttpResponseRedirect
 from django.shortcuts import render , get_object_or_404
 from django.urls import reverse
@@ -33,14 +33,9 @@ def load_profiles(request):
     print(userName)  
     data = User.objects.filter(username = userName )  
     data = data.values().first()
-    followers = Profile.objects.filter(user = userName)
-    following = Profile.objects.following
-    follower_count = Profile.objects.count()
-    data.update({"followers count":follower_count, "followers":followers})
-    print(following)
-    print(followers)
-    print(follower_count)
-    print(data) 
+    following = Profile.objects.filter(user = userName)
+    follower_count = following.count()
+    data.update({"followers count":follower_count, "followers":following}) 
     return JsonResponse(data, safe=False)
 
     
@@ -57,38 +52,37 @@ def follow_view(request):
         followersid = int(data.get("followid"))
         #check if user has profile
         user2follow = User.objects.get(id = followersid) 
-        try:
-            profile = Profile.objects.get(user = request.user)
-            #follow the request user
+        profile = Profile.objects.get(user = request.user.id)
+        #follow the request user if they are not followed
+        if  not profile.following.filter( id = user2follow.pk).exists():
             profile.following.add(user2follow)
-            print(profile.objects.all().values())
             print("you are now following user")
             return JsonResponse({"success":"user was followed"})
-        except:
-            #create a profile for database 
-            return JsonResponse({"success":"user has been followed"})
-
+        #unfollow requested user if followed 
+        elif profile.following.filter(id = user2follow.pk).exists():
+            profile.following.remove(user2follow)
+            print("user was unfollowed")
+            return JsonResponse({"success":"user has been unfollowed"})
+        #error message incase something goes wrong
+        else:
+            JsonResponse({"error":"something went wrong"})
+       
     else:
         return JsonResponse({"error":"An unknow error occured"})
 
 @login_required
 @csrf_exempt
 def follow_posts(request):
-    #find users follwers 
-    user = User.objects.get(username = request.user)
-    followersPosts = Profile.objects.filter(user = user)
-    
+    #find the users the user is following
+    followersPosts = Profile.objects.get(user =request.user.id)
+    print(followersPosts.following.values())
     posts = Post.objects 
-    profileNums = len(followersPosts)
     postCollection = {}
     i = 0
     #use followers profiles to retreive their posts
-    for post in followersPosts and i in range(profileNums):
-        try:
-            postCollection.update( {str(i): str((posts.filter(userID = post.user).values()[i]))})
-        except:
-            print("USER IS NOT FOLLOWING ANYONE!!")
-        i+=1
+    for post in followersPosts.following.values():
+            postCollection.update( {str(i): str((posts.filter(userID = post.get('id')).values()[i]))})
+            i+=1
     print(postCollection)
     return JsonResponse(postCollection, safe=False)
     
@@ -96,19 +90,32 @@ def follow_posts(request):
 @login_required    
 def get_posts(request, page_num):
     if request.method == 'GET':
-    
-        post_data = Post.objects.all().order_by('timestamp')
-        pag = Paginator(post_data, 10) 
-        post = pag.get_page(page_num)
-        
-        #get profiles of each user who posts
-        posts =serializers.serialize('json',post)
-        response_data = {
-            'posts': json.loads(posts),
-            'page': post.number,
-            'total_pages': pag.num_pages,
-            'has_next': post.has_next(),
-            'has_previous': post.has_previous(),
+       #get the likes and the posts
+        post_data = Post.objects.annotate(like_count=Count('likes__UserIDs')).order_by('-timestamp')
+
+        # Paginate results
+        paginator = Paginator(post_data, 10)
+        posts_page = paginator.get_page(page_num)
+
+        # Serialize posts and include the like_count
+        posts = []
+        for post in posts_page:
+            
+            posts.append({
+                'id': post.postID,
+                'user': post.userID.username,
+                'description': post.description,
+                'likes': post.like_count,  # Add like_count
+                'views': post.views,
+                'timestamp': post.timestamp,
+            })
+            
+            response_data = {
+            'posts': posts,
+            'page': posts_page.number,
+            'total_pages': paginator.num_pages,
+            'has_next': posts_page.has_next(),
+            'has_previous': posts_page.has_previous(),
         }
         
 
@@ -139,14 +146,14 @@ def update_likes(request):
             post.UserIDs.add(userID)
             post.record = post.UserIDs.count()
             print(post.record)
-            return JsonResponse({""})
+            return JsonResponse({"success":"post was liked"})
         
         #check if its liekd and remove like 
         elif isliked and request.user.is_authenticated:
             post.UserIDs.remove(userID)
             post.record = post.UserIDs.count()         
             print(post.record)
-            return JsonResponse({""})
+            return JsonResponse({"success":"post was unliked"})
         else:
             return JsonResponse({"error":"something went wrong while trying to add like"})
 
@@ -212,7 +219,7 @@ def register(request):
             profile = Profile()
             profile.user = user
             profile.save()
-
+        
 
         except IntegrityError:
             return render(request, "network/register.html", {
