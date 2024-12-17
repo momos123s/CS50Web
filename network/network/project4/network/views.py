@@ -166,13 +166,19 @@ def edit_description(request):
     if request.method == 'PUT':
         #retrieve description for user to edit
         data = json.loads(request.body)
-        descrip = data.get("descript")
-        description = Post.objects.get(User = request.user)
-        description.description = descrip
-        description.save()
-        return JsonResponse({"response: success"})
+        descrip = data.get("editContent")
+
+        postid = data.get("id")
+        description = Post.objects.get(postID = postid)
+        #ensure user authentication and post is users 
+        if request.user.is_authenticated and description.userID == request.user:
+            description.description = descrip
+            description.save()
+            return JsonResponse({"response":" success"} )
+        else:
+            return JsonResponse({"error":"you cannot edit someone elses post"})
     else:
-        return JsonResponse({"response: something went wrong!"})
+        return JsonResponse({"response": "something went wrong!"})
 
 def login_view(request):
     if request.method == "POST":
@@ -219,7 +225,7 @@ def register(request):
             profile = Profile()
             profile.user = user
             profile.save()
-        
+
 
         except IntegrityError:
             return render(request, "network/register.html", {

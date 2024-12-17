@@ -14,8 +14,7 @@ urlpatterns = [
     path("profile_view", views.profile_view, name="profile_view"),
     path("load_profiles",views.load_profiles,name="load_profiles"),
     path("follow",views.follow_view, name="follow"),
-    path("followOrUnfollow",views.follow_posts, name="followOrUnfollow")
-    
-
+    path("followOrUnfollow",views.follow_posts, name="followOrUnfollow"),
+    path("update_descr", views.edit_description,name="update_descr")
     
 ]
