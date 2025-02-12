@@ -1,6 +1,7 @@
 
 from django.urls import path
-
+from django.conf.urls.static import static 
+from django.conf import settings
 from . import views
 
 urlpatterns = [
@@ -16,5 +17,7 @@ urlpatterns = [
     path("follow",views.follow_view, name="follow"),
     path("followOrUnfollow",views.follow_posts, name="followOrUnfollow"),
     path("update_descr", views.edit_description,name="update_descr")
-    
 ]
+
+urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
+

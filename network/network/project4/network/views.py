@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.core.paginator import Paginator
 import json
 from .models import Post,User,Profile,Likes
+
 from django.core import serializers
 
 
@@ -20,7 +21,9 @@ def index(request):
 @csrf_exempt
 def profile_view(request):
     #get users profile information 
-    if request.method == "GET":   
+    if request.method == "GET":  
+        profilepic = Profile.profile_picture
+        print(profilepic) 
         return render(request, "network/profile.html") 
   
     else:
@@ -33,10 +36,13 @@ def load_profiles(request):
     print(userName)  
     data = User.objects.filter(username = userName )  
     data = data.values().first()
+    print(data)
     following = Profile.objects.filter(user = userName)
     follower_count = following.count()
+    profile = Profile.objects.get(ProfileID = 3)
+    print(Profile.profile_picture)
     data.update({"followers count":follower_count, "followers":following}) 
-    return JsonResponse(data, safe=False)
+    return JsonResponse(data)
 
     
 @login_required
@@ -75,14 +81,18 @@ def follow_view(request):
 def follow_posts(request):
     #find the users the user is following
     followersPosts = Profile.objects.get(user =request.user.id)
-    print(followersPosts.following.values())
+   
     posts = Post.objects 
     postCollection = {}
-    i = 0
+    i = 1
     #use followers profiles to retreive their posts
     for post in followersPosts.following.values():
-            postCollection.update( {str(i): str((posts.filter(userID = post.get('id')).values()[i]))})
-            i+=1
+        try:
+            postCollection.update( {str(i): str((posts.filter(userID = post.get('id')).values()[0]))})
+        except:
+            print("empty query set")
+        i+=1
+      
     print(postCollection)
     return JsonResponse(postCollection, safe=False)
     
@@ -91,34 +101,36 @@ def follow_posts(request):
 def get_posts(request, page_num):
     if request.method == 'GET':
        #get the likes and the posts
-        post_data = Post.objects.annotate(like_count=Count('likes__UserIDs')).order_by('-timestamp')
-
+        post_data = Post.objects.annotate(like_count=Count('likes__UserIDs')).order_by('timestamp')
+        
         # Paginate results
         paginator = Paginator(post_data, 10)
         posts_page = paginator.get_page(page_num)
+        
 
         # Serialize posts and include the like_count
         posts = []
         for post in posts_page:
-            
+          
             posts.append({
                 'id': post.postID,
                 'user': post.userID.username,
                 'description': post.description,
-                'likes': post.like_count,  # Add like_count
+                'likes': post.like_count, 
                 'views': post.views,
                 'timestamp': post.timestamp,
             })
+         
             
-            response_data = {
+        response_data = {
             'posts': posts,
             'page': posts_page.number,
             'total_pages': paginator.num_pages,
             'has_next': posts_page.has_next(),
             'has_previous': posts_page.has_previous(),
-        }
-        
-
+            }
+        print(posts)
+        print(response_data)
         return JsonResponse(response_data, safe=True)
     else:
         return HttpResponse("<p>error<p>")
@@ -209,6 +221,7 @@ def register(request):
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
+        profilePicture = request.POST["profilePicture"]                    
 
         # Ensure password matches confirmation
         password = request.POST["password"]
@@ -224,6 +237,7 @@ def register(request):
             user.save()
             profile = Profile()
             profile.user = user
+            profile.profile_picture = profilePicture
             profile.save()
 
 
@@ -244,19 +258,18 @@ def new_post(request):
         #retrieve post data 
         data = json.loads(request.body)
         post_data = list(data.values())
-        print(post_data[0])
+   
         #place items in database
         create_post = Post()
         create_post.userID = request.user
         print(request.user)
         create_post.username = request.user
-        create_post.description = post_data[1]
-        create_post.mediaUpload = post_data[0]
+        create_post.description = post_data[0]
         create_post.save()
         like = Likes()
         like.postID = create_post
         like.save()
-        print(post_data)
+ 
         return JsonResponse({"success":"True"}, status =200 )
     else: 
         return JsonResponse({"error":"problem handling request"}, status = 300)

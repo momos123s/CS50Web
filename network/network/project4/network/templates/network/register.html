@@ -11,6 +11,10 @@
     <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
+            <label class="form-label">Profile Picture:</label>
+            <input class="form-control" type="file" name="profilePicture" placeholder="profile picture">
+        </div>
+        <div class="form-group">
             <input class="form-control" autofocus type="text" name="username" placeholder="Username">
         </div>
         <div class="form-group">

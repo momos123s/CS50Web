@@ -6,15 +6,15 @@
             <div class="row align-items-start">
                 <div class="col"></div>
               <div class="col">
-
+                {% if user.is_authenticated %}
                     <div id = "newPostD">
                     
                     </div>
-                    {% if user.is_authenticated %}
+               
                     <div id = "viewPosts">
                     
                     </div>
-                    {% endif %}
+                {% endif %}
             </div>
             <div class="col"></div>
         </div>

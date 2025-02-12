@@ -9,6 +9,10 @@ class Profile(models.Model):
     ProfileID = models.BigAutoField(primary_key=True,unique=True)
     user = models.ForeignKey("User",on_delete=models.CASCADE,related_name="profile")
     following = models.ManyToManyField("User", related_name="follow")
+    profile_picture = models.ImageField(
+    default='defaultPP.jpg',
+    null=False
+)
 
 
 class Post(models.Model):
@@ -17,7 +21,6 @@ class Post(models.Model):
     username = models.CharField(max_length=120,null=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=False)
-    mediaUpload = models.FileField(null=True, upload_to='media/')
     views = models.PositiveBigIntegerField(default=0)
 
 class Likes(models.Model):

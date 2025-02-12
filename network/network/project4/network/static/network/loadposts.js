@@ -72,35 +72,5 @@ ReactDOM.render( <ShowPost/>, document.querySelector('#viewPosts'));
 
 
 
-console.log(typeof null);
-//check if file type is a video or image
-function mediaDector(fileUrl)
-{
-    let media = fileUrl 
-    media = media.split('.').pop().toLowerCase();
-
-  if (["jpg", "jpeg", "png", "gif"].includes(media)) {
-      // It's an image
-      console.log("this is an image");
-      return(
-        <img src={fileUrl} alt="Description" width="600" />
-      )
-
-  } else if (["mp4", "avi", "mov"].includes(media)) {
-      // It's a video
-      console.log("its a video");
-      return(
-      <video width="600" controls>
-      <source src={fileUrl} type="video/mp4" />
-      Your browser does not support the video tag.
-       </video>
-      )
-  } else{
-      return console.log("no file dectected");
-  }
-    }
-
-
-
 
 

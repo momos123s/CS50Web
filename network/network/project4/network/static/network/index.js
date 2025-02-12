@@ -1,4 +1,9 @@
-
+function alertPost()
+{
+    return(<div class="alert alert-light" role="alert">
+        A simple light alert—check it out!
+      </div>)
+}
 
 
 function PostForm()
@@ -9,15 +14,11 @@ function PostForm()
 
     return(
         <div className="post-form">
-            <form >
+            <form enctype="multipart/form-data" method="post">
                 <div className="main-post-div">
-
-                    <div className="mb-3">
-                        <label className="post-label">media:</label>
-                        <input type="file" className=" post-text form-control" placeholder="media" value ={file} onChange={f => setFile(f.target.value)}></input>
-                    </div>
                     <div className = "mb-3"> 
                         <label className="post-label">descritption:</label>
+                       
                         <textarea class=" description form-control" id="" rows="3" value={description} onChange={d=>setDescription(d.target.value)}></textarea>
                     </div>
          

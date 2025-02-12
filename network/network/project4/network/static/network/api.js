@@ -56,7 +56,7 @@ function update_follows(followid) {
 
 
 //updates
-function new_post (description,media)
+function new_post (description)
 {
 
     
@@ -68,7 +68,6 @@ function new_post (description,media)
             "X-CSRFTOKEN":cookies
         },
         body: JSON.stringify({
-            file:media,
             content:description,
 
         })
