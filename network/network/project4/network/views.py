@@ -22,8 +22,6 @@ def index(request):
 def profile_view(request):
     #get users profile information 
     if request.method == "GET":  
-        profilepic = Profile.profile_picture
-        print(profilepic) 
         return render(request, "network/profile.html") 
   
     else:
@@ -33,15 +31,30 @@ def profile_view(request):
 @csrf_exempt
 def load_profiles(request):
     userName = request.user
-    print(userName)  
+   
     data = User.objects.filter(username = userName )  
     data = data.values().first()
-    print(data)
+   
+    #get follower and follwing counts
     following = Profile.objects.filter(user = userName)
     follower_count = following.count()
-    profile = Profile.objects.get(ProfileID = 3)
-    print(Profile.profile_picture)
-    data.update({"followers count":follower_count, "followers":following}) 
+   
+
+    #get the people user is following
+    users_follows = following.get(user = userName)
+    users_follows = users_follows.following.values().first()
+
+    #get the users posts
+    posts_collection = Post.objects.filter(userID = request.user.id).annotate(like_count=Count('likes__UserIDs')).order_by('timestamp')
+    posts = []
+    for post in posts_collection.values():
+        posts.append(post)
+
+
+
+    print(posts)
+    following = following.values().first()
+    data.update({ "users_posts":posts,"users_follows":users_follows,"followers count":follower_count, "followers":following}) 
     return JsonResponse(data)
 
 @login_required
@@ -103,7 +116,6 @@ def follow_posts(request,page_num):
     
     print(postCollection.values())
     #paginate the posts 
-    render(request,"network/follow.html")
     return posts(request,page_num,postCollection)
     
 

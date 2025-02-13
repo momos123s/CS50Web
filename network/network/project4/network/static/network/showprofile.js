@@ -13,7 +13,7 @@ function ShowProfile()
             {
             // profle picture goes here
             }
-            <p>followers:</p>
+            <p>follower count:</p>
             <p>following</p>
         </div>
     );
