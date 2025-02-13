@@ -44,6 +44,9 @@ def load_profiles(request):
     data.update({"followers count":follower_count, "followers":following}) 
     return JsonResponse(data)
 
+@login_required
+def follow(request):
+    return render(request,"network/follow.html")
     
 @login_required
 @csrf_exempt
@@ -78,31 +81,46 @@ def follow_view(request):
 
 @login_required
 @csrf_exempt
-def follow_posts(request):
+def follow_posts(request,page_num):
     #find the users the user is following
     followersPosts = Profile.objects.get(user =request.user.id)
    
-    posts = Post.objects 
-    postCollection = {}
+    posts_ = Post.objects 
+    postCollection = None
     i = 1
     #use followers profiles to retreive their posts
     for post in followersPosts.following.values():
+        #check if person followed has posts
         try:
-            postCollection.update( {str(i): str((posts.filter(userID = post.get('id')).values()[0]))})
+            postCollection = (  (posts_.filter(userID = post.get('id'))))
         except:
-            print("empty query set")
+           return render(request,"network/follow.html")
         i+=1
-      
-    print(postCollection)
-    return JsonResponse(postCollection, safe=False)
+    try:
+        postCollection = postCollection.annotate(like_count=Count('likes__UserIDs')).order_by('-timestamp')
+    except:
+        return render(request,"network/follow.html")
+    
+    print(postCollection.values())
+    #paginate the posts 
+    render(request,"network/follow.html")
+    return posts(request,page_num,postCollection)
     
 
+@login_required 
+def get_posts(request,page_num):
+    if request.method == "GET":
+        post_data = Post.objects.annotate(like_count=Count('likes__UserIDs')).order_by('-timestamp')
+        return posts(request,page_num,post_data)
+    else:
+        return JsonResponse({"error":"something went wrong"})
+
 @login_required    
-def get_posts(request, page_num):
-    if request.method == 'GET':
-       #get the likes and the posts
-        post_data = Post.objects.annotate(like_count=Count('likes__UserIDs')).order_by('timestamp')
+def posts(request, page_num,post_data):
+
+        #get the likes and the posts
         
+        print(post_data)
         # Paginate results
         paginator = Paginator(post_data, 10)
         posts_page = paginator.get_page(page_num)
@@ -111,7 +129,7 @@ def get_posts(request, page_num):
         # Serialize posts and include the like_count
         posts = []
         for post in posts_page:
-          
+            
             posts.append({
                 'id': post.postID,
                 'user': post.userID.username,
@@ -120,7 +138,7 @@ def get_posts(request, page_num):
                 'views': post.views,
                 'timestamp': post.timestamp,
             })
-         
+            
             
         response_data = {
             'posts': posts,
@@ -129,11 +147,9 @@ def get_posts(request, page_num):
             'has_next': posts_page.has_next(),
             'has_previous': posts_page.has_previous(),
             }
-        print(posts)
-        print(response_data)
+       
+
         return JsonResponse(response_data, safe=True)
-    else:
-        return HttpResponse("<p>error<p>")
 
 #updates the likes
 @csrf_exempt

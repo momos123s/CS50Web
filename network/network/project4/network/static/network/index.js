@@ -9,7 +9,6 @@ function alertPost()
 function PostForm()
 {
 
-    const [file, setFile] = React.useState("");
     const [description, setDescription] = React.useState("");
 
     return(
