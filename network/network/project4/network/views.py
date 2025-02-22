@@ -9,7 +9,6 @@ from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.core.paginator import Paginator
 import json
 from .models import Post,User,Profile,Likes
-
 from django.core import serializers
 
 
@@ -48,13 +47,21 @@ def load_profiles(request):
     posts_collection = Post.objects.filter(userID = request.user.id).annotate(like_count=Count('likes__UserIDs')).order_by('timestamp')
     posts = []
     for post in posts_collection.values():
-        posts.append(post)
+        print(post)
+        posts.append({
+        'id': post.get("postID"),
+        'user': post.get("userID"),
+        'description': post.get("description"),
+        'likes': post.get("like_count"), 
+        'views': post.get("views"),
+        'timestamp': post.get("timestamp"),
+    })
 
 
 
     print(posts)
     following = following.values().first()
-    data.update({ "users_posts":posts,"users_follows":users_follows,"followers count":follower_count, "followers":following}) 
+    data.update({ "users_posts":posts,"users_follows":users_follows,"followers_count":follower_count, "followers":following}) 
     return JsonResponse(data)
 
 @login_required
@@ -207,7 +214,6 @@ def edit_description(request):
         #retrieve description for user to edit
         data = json.loads(request.body)
         descrip = data.get("editContent")
-
         postid = data.get("id")
         description = Post.objects.get(postID = postid)
         #ensure user authentication and post is users 

@@ -38,7 +38,7 @@ function update_follows(followid) {
     //get checkbox and weather its liked or not
     
     //send to the server
-    let response =  fetch("/follow",
+    let response =  fetch("/followOrUnfollow",
     {
         method:"PUT",
         body : JSON.stringify({

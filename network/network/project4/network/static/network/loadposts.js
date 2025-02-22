@@ -1,38 +1,38 @@
-      
-      function handlelikeButton(postID,buttonClicked, heart,likes){
-        
-        if(buttonClicked == null){
-            return(
-                <div>
-                      "🤍 "+ {likes};
-                </div>
-            )
-              
-        }
-        else if(buttonClicked && heart == "❤️" ){
-            update_likes(postID,null,"","/update_likes");           
-            return(
-                <div>
-                      "❤️ "+ {likes+1};
-                </div>)
-        }
-        else if(buttonClicked && heart == "🤍"){
-            update_likes(postID,null,"","/update_likes");
-            return(
-                <div>
-                      "🤍"+ {likes-1};
-                </div>
-            )
-        }
-        else{
-            return "something went wrong";
-        }
-      }
+function handlelikeButton(postID,buttonClicked, heart,likes){
+    
+    if(buttonClicked == null){
+        return(
+            <div>
+                    "🤍 "+ {likes};
+            </div>
+        )
+            
+    }
+    else if(buttonClicked && heart == "❤️" ){
+        update_likes(postID,null,"","/update_likes");           
+        return(
+            <div>
+                    "❤️ "+ {likes+1};
+            </div>)
+    }
+    else if(buttonClicked && heart == "🤍"){
+        update_likes(postID,null,"","/update_likes");
+        return(
+            <div>
+                    "🤍"+ {likes-1};
+            </div>
+        )
+    }
+    else{
+        return "something went wrong";
+    }
+}
+
 
 
 
 //display posts
-function ShowPost() {
+function ShowPost(link) {
   const [posts, setPosts] = React.useState([]);
 
   React.useEffect(() => {
@@ -54,6 +54,7 @@ function ShowPost() {
                         <p className="card-text text-start">{post.user}</p>
                         <p className="card-text">{post.description}</p>
                         <div className="likeboxArea">
+                            
                             <p className="like_button" onClick={() => handlelikeButton(post.id,true,"❤️",post.like_count) }>
                                    {`🤍 ${post.likes}`}
                             </p>
