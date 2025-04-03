@@ -1,33 +1,14 @@
-function handlelikeButton(postID,buttonClicked, heart,likes){
-    
-    if(buttonClicked == null){
-        return(
-            <div>
-                    "🤍 "+ {likes};
-            </div>
-        )
-            
-    }
-    else if(buttonClicked && heart == "❤️" ){
-        update_likes(postID,null,"","/update_likes");           
-        return(
-            <div>
-                    "❤️ "+ {likes+1};
-            </div>)
-    }
-    else if(buttonClicked && heart == "🤍"){
-        update_likes(postID,null,"","/update_likes");
-        return(
-            <div>
-                    "🤍"+ {likes-1};
-            </div>
-        )
-    }
-    else{
-        return "something went wrong";
-    }
-}
+function LikeButton(PostID,amountofLikes ){
 
+    const [amount, setAmount] = React.useState([amountofLikes])
+
+    return(
+        <div>
+            <p onlick={ () => setAmount(amount+1) }>❤️ </p>
+        </div>
+    );
+
+}
 
 
 
@@ -35,12 +16,14 @@ function handlelikeButton(postID,buttonClicked, heart,likes){
 function ShowPost(link) {
   const [posts, setPosts] = React.useState([]);
 
+    let pagelink = "" ? link : "get_posts/1";
+    console.log(pagelink)
   React.useEffect(() => {
-      get_api(`/get_posts/${"1"}`,"error loading posts").then(data => setPosts(data));
+      get_api(pagelink,"error loading posts").then(data => setPosts(data));
   }, []);
         //updates and increments the likes when likes is pressed
 
-  posts.posts && posts.posts.map((posts,index) => ( console.log(posts.fields)));
+
   
   return (
     <div className="main-content">   
@@ -54,21 +37,39 @@ function ShowPost(link) {
                         <p className="card-text text-start">{post.user}</p>
                         <p className="card-text">{post.description}</p>
                         <div className="likeboxArea">
-                            
-                            <p className="like_button" onClick={() => handlelikeButton(post.id,true,"❤️",post.like_count) }>
-                                   {`🤍 ${post.likes}`}
-                            </p>
+                          <LikeButton postID={post.postID}></LikeButton>
                             <p className="card-text small">{post.timestamp}</p>
                         </div>
                     </div>
                 </div>
             </div>       
         ))}
+        <div className = "pagination">
+            {console.log(posts)}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    { Array.from({length: posts.total_pages} ,(_,i) => {
+                        return(
+                           <li class="page-item" key={i}>
+                           <a class="page-link" href="">{i + 1}</a>
+                       </li>)})}
+
+                    <li class="page-item">
+                    <a class="page-link" href="">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
     </div>
   );
 }
-ReactDOM.render( <ShowPost/>, document.querySelector('#viewPosts'));
+
+ReactDOM.render(<ShowPost/>, document.querySelector("#viewPosts"));
+
 
 
 

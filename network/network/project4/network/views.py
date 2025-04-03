@@ -57,9 +57,7 @@ def load_profiles(request):
         'timestamp': post.get("timestamp"),
     })
 
-
-
-    print(posts)
+    
     following = following.values().first()
     data.update({ "users_posts":posts,"users_follows":users_follows,"followers_count":follower_count, "followers":following}) 
     return JsonResponse(data)
@@ -83,7 +81,7 @@ def follow_view(request):
         user2follow = User.objects.get(id = followersid) 
         profile = Profile.objects.get(user = request.user.id)
         #follow the request user if they are not followed
-        if  not profile.following.filter( id = user2follow.pk).exists():
+        if  not profile.following.filter( id = user2follow.pk).exists() and not followersid == request.user.id :
             profile.following.add(user2follow)
             print("you are now following user")
             return JsonResponse({"success":"user was followed"})

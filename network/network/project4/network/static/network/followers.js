@@ -1,8 +1,9 @@
-function ShowPost() {
+function FollowersPosts() {
+
     const [posts, setPosts] = React.useState([]);
   
     React.useEffect(() => {
-        get_api(`/follow_posts/${"1"}`,"error loading posts").then(data => setPosts(data));
+        get_api("/follow_posts/1","error loading posts").then(data => setPosts(data));
     }, []);
           //updates and increments the likes when likes is pressed
   
@@ -20,9 +21,7 @@ function ShowPost() {
                           <p className="card-text text-start">{post.user}</p>
                           <p className="card-text">{post.description}</p>
                           <div className="likeboxArea">
-                              <p className="like_button" onClick={() => handlelikeButton(post.id,true,"❤️",post.like_count) }>
-                                     {`🤍 ${post.likes}`}
-                              </p>
+                       
                               <p className="card-text small">{post.timestamp}</p>
                           </div>
                       </div>
@@ -33,6 +32,4 @@ function ShowPost() {
       </div>
     );
   }
-  ReactDOM.render( <ShowPost/>, document.querySelector('#followingPost'));
-  
-  
+  ReactDOM.render(<FollowersPosts/>, document.querySelector("#followingPost"));
