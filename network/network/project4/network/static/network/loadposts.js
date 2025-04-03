@@ -12,66 +12,72 @@ function LikeButton(PostID,amountofLikes ){
 
 
 
-//display posts
-function ShowPost(link) {
-  const [posts, setPosts] = React.useState([]);
-
-    let pagelink = "" ? link : "get_posts/1";
-    console.log(pagelink)
-  React.useEffect(() => {
-      get_api(pagelink,"error loading posts").then(data => setPosts(data));
-  }, []);
-        //updates and increments the likes when likes is pressed
-
-
+function ShowPost() {
+    const [posts, setPosts] = React.useState([]);
+    const [currentPage, setCurrentPage] = React.useState(1);
   
-  return (
-    <div className="main-content">   
-        {posts.posts && posts.posts.map((post, index) => (
-            <div className="individual-post" key={post.postid}>
-                {console.log(post)}
-                <div className="card">
-                 
-                    <div className="card-body">
-                        <h5 className="card-title">{post.heading}</h5>
-                        <p className="card-text text-start">{post.user}</p>
-                        <p className="card-text">{post.description}</p>
-                        <div className="likeboxArea">
-                          <LikeButton postID={post.postID}></LikeButton>
-                            <p className="card-text small">{post.timestamp}</p>
-                        </div>
-                    </div>
+    // Function to fetch posts from the Django API
+    const fetchPosts = (page) => {
+      get_api(`/get_posts/${page}`, "error loading posts").then(data => setPosts(data));
+    };
+  
+    React.useEffect(() => {
+      fetchPosts(currentPage);
+    }, [currentPage]);  // Fetch posts whenever currentPage changes
+  
+    return (
+      <div className="main-content">
+        {posts.posts && posts.posts.map(post => (
+          <div className="individual-post" key={post.id}>
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">{post.heading}</h5>
+                <p className="card-text text-start">{post.user}</p>
+                <p className="card-text">{post.description}</p>
+                <div className="likeboxArea">
+                  <LikeButton postID={post.id} amountofLikes={post.likes} />
+                  <p className="card-text small">{post.timestamp}</p>
                 </div>
-            </div>       
+              </div>
+            </div>
+          </div>
         ))}
-        <div className = "pagination">
-            {console.log(posts)}
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                    </li>
-                    { Array.from({length: posts.total_pages} ,(_,i) => {
-                        return(
-                           <li class="page-item" key={i}>
-                           <a class="page-link" href="">{i + 1}</a>
-                       </li>)})}
-
-                    <li class="page-item">
-                    <a class="page-link" href="">Next</a>
-                    </li>
-                </ul>
-            </nav>
+  
+        {/* Pagination */}
+        <div className="pagination">
+          <nav aria-label="Page navigation">
+            <ul className="pagination justify-content-center">
+              {/* Previous Button */}
+              <li className={`page-item ${posts.page === 1 ? "disabled" : ""}`}>
+                <button className="page-link" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}>
+                  Previous
+                </button>
+              </li>
+  
+              {/* Page Numbers */}
+              {Array.from({ length: posts.total_pages }, (_, i) => (
+                <li key={i} className={`page-item ${posts.page === i + 1 ? "active" : ""}`}>
+                  <button className="page-link" onClick={() => setCurrentPage(i + 1)}>
+                    {i + 1}
+                  </button>
+                </li>
+              ))}
+  
+              {/* Next Button */}
+              <li className={`page-item ${posts.page === posts.total_pages ? "disabled" : ""}`}>
+                <button className="page-link" onClick={() => setCurrentPage(prev => Math.min(prev + 1, posts.total_pages))}>
+                  Next
+                </button>
+              </li>
+            </ul>
+          </nav>
         </div>
-
-    </div>
-  );
-}
-
-ReactDOM.render(<ShowPost/>, document.querySelector("#viewPosts"));
-
-
-
+      </div>
+    );
+  }
+  
+  ReactDOM.render(<ShowPost />, document.querySelector("#viewPosts"));
+  
 
 
 
