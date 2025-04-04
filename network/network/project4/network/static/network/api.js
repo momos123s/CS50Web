@@ -17,25 +17,24 @@ async function get_api(link, errorMessage,) {
 }
 
 //updates likes, description 
-function update_likes(id, liked,editContent,url) {
-    //get checkbox and weather its liked or not
-    let istrue = liked;
-    console.log(istrue);
-    //send to the server
-    let response =  fetch(url,
-    {
-        method:"PUT",
-        body : JSON.stringify({
-            id:id,
-            editContent:editContent,
-            'Content-type':'application/json'
-        })
-    })
-    .then(response => response.json())
-    .then(result => console.log(result))
+async function update_likes(id, liked, editContent, url) {
+    try {
+        let response = await fetch(url, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" }, 
+            body: JSON.stringify({ id: id, editContent: editContent })
+        });
+
+        let data = await response.json();
+        console.log(data); 
+        return data; 
+    } catch (error) {
+        console.error("Failed to update likes:", error);
+    }
 }
+
 function update_follows(followid) {
-    //get checkbox and weather its liked or not
+    
     
     //send to the server
     let response =  fetch("/followOrUnfollow",

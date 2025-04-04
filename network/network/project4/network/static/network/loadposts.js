@@ -1,14 +1,42 @@
-function LikeButton(PostID,amountofLikes ){
+function LikeButton({ PostID, amountofLikes }) {
+    const [amount, setAmount] = React.useState(amountofLikes);
+    const [likes, setLike] = React.useState();
 
-    const [amount, setAmount] = React.useState([amountofLikes])
+//
+   async function Clicklike(){
+    try{
+        //call and wait for response from server
+        const update = await update_likes(PostID,null,null,"/update_likes")
+        //stores server data 
+        setLike(update)
+        console.log(update)
+        return likes;
+    }
+    catch(error){
+        console.error("issues handling the click of like button")
+        return null;
+    }
+    
+}
+//check if resposse has data and updae values
+React.useEffect(() => {
+    if (likes !== null) {
+        console.log("Updated likes from server:", likes);
+    }
+}, [likes]);
 
-    return(
+    
+    return (
         <div>
-            <p onlick={ () => setAmount(amount+1) }>❤️ </p>
+            <p onClick={ () => 
+                {setAmount(prev => prev + 1);
+                Clicklike().then(updatedLikes => console.log("Updated like data:", updatedLikes));
+
+                 }}> ❤️{amount} </p>
         </div>
     );
-
 }
+
 
 
 
@@ -35,7 +63,7 @@ function ShowPost() {
                 <p className="card-text text-start">{post.user}</p>
                 <p className="card-text">{post.description}</p>
                 <div className="likeboxArea">
-                  <LikeButton postID={post.id} amountofLikes={post.likes} />
+                  <LikeButton PostID={post.id} amountofLikes={post.likes} />
                   <p className="card-text small">{post.timestamp}</p>
                 </div>
               </div>

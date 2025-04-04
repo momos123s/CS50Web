@@ -8,11 +8,6 @@ function ShowProfile()
     let post = profile.users_posts || [];
     console.log(profile);
   
-    
-
-    
-    
-
 
     return(
         <div id ="showProfile">

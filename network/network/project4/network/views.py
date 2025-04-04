@@ -191,14 +191,16 @@ def update_likes(request):
             post.UserIDs.add(userID)
             post.record = post.UserIDs.count()
             print(post.record)
-            return JsonResponse({"success":"post was liked"})
+            response = {"success":"post was liked", "amount":post.record,"isliked":isliked}
+            return JsonResponse(response)
         
         #check if its liekd and remove like 
         elif isliked and request.user.is_authenticated:
             post.UserIDs.remove(userID)
             post.record = post.UserIDs.count()         
             print(post.record)
-            return JsonResponse({"success":"post was unliked"})
+            response  = {"success":"post was unliked","amount":post.record,"isliked":isliked}
+            return JsonResponse(response)
         else:
             return JsonResponse({"error":"something went wrong while trying to add like"})
 
