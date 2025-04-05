@@ -1,7 +1,9 @@
 function alertPost()
 {
+    const [postAlert, setAlert] = React.useState("")
+    setAlert(" A simple light alert—check it out!");
     return(<div class="alert alert-light" role="alert">
-        A simple light alert—check it out!
+    {postAlert}
       </div>)
 }
 

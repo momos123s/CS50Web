@@ -92,15 +92,13 @@ body{
 }
 
 /* for the show profile */
-#profile-col{
-    
-}
 
 
 
 #accInfo
 {
     font-family: 'Times New Roman', Times, serif;
+    font-weight: 800;
     text-align: center;
 }
 
@@ -108,8 +106,28 @@ body{
 
 #top-info
 {
-    border-style: solid;
+    border-style: double;
     border-width: 1px;
-    border-color: rgb(0, 0, 0);
+    border-color: rgb(182, 182, 182);
+    border-left: 0;
+    border-right: 0;
+    width: fit-content;
     
+}    
+
+
+#pro-username{
+    font-family: 'Fantasy';
+    font-size: 2em;
+
 }
+
+#post-header{
+    font-weight: 800;
+}
+#profile-col{
+    font-size: 1.5em ;
+    font-family: 'Fantasy';
+    font-weight: 1000;
+}
+

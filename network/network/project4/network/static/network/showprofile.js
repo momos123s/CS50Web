@@ -11,26 +11,21 @@ function ShowProfile()
 
     return(
         <div id ="showProfile">
-            <h1 id="accInfo"> Account Information </h1>
-            <div id="top-info"class="row" >
-    
-                <div class = "col-6">
-                </div>
-                <div class="col" id="profile-col">
-                    <h1>User: {profile.username}</h1>
-                    <h3>Email: {profile.email}</h3>
-                    <h3>Followers:{profile.followers_count}</h3>
+            <h1 id="accInfo"> {profile.username}s Information: </h1>
+        
 
-                </div>
-         
-            </div>
-            <div class = "row" > 
-
-            </div>
-            <div class ="row" >
-            
             <div className="main-content">  
-                <h2>My Posts:</h2> 
+            
+                    <h1 >Usr: {profile.username}</h1>
+                    <h3 >Email: {profile.email}</h3>
+                    <h3 >Follwng: {profile.followers_count}</h3>
+             {console.log(profile)}
+
+                </div>
+        
+            
+
+                <h2 id="post-header">{profile.username}s Posts:</h2> 
           {post && post.map((item, index) => (
               <div className="individual-post" key={item.postid}>
                   {console.log(item)}
@@ -48,14 +43,8 @@ function ShowProfile()
           ))}
   
       </div>
-
-
-
-
-
-
-            </div>
-        </div>
+        
+      
     );
 }
 ReactDOM.render(< ShowProfile/>, document.querySelector("#profile_view"));
