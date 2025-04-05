@@ -21,7 +21,7 @@ function PostForm()
                         <textarea class=" description form-control" id="" rows="3" value={description} onChange={d=>setDescription(d.target.value)}></textarea>
                     </div>
             
-                    <button type="button" id="sub-Button"className="btn btn-warning" onClick={() => new_post(description)}>create post</button>
+                    <button type="button" id="sub-Button"className="btn btn-secondary" onClick={() => new_post(description)}>create post</button>
                 </div>
             </form>
         </div>

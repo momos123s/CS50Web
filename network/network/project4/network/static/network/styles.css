@@ -8,11 +8,15 @@ body{
 .main-nav{
     background-color:#000000;
     color: rgb(255, 255, 255);
+    justify-content: center;
 }
 
 .nav-link
 {
     color: rgb(255, 253, 253);
+    margin:2px;
+
+    
 }
 
 /*for the post forum*/
@@ -39,8 +43,46 @@ body{
 {
     background-color: #ffffff;
     width: 50em;
-    
     color: #000000;
+    font-size: 1em;
+    
+}
+
+#timestamp{
+    color:#000000;
+    font-size: 0.6em;
+    width: fit-content;
+    justify-content: end;
+}
+#username{
+    color: #d4d4d4;
+    border-style: double;
+    border-color: #000000;
+    border-radius: 1em;
+    border-width: 3px;
+    padding:3px;
+    background-image:radial-gradient(rgb(117, 97, 97),rgb(145, 145, 145));
+    width: fit-content;
+
+}
+#description{
+    justify-content: center;
+    text-align: left;
+    font-size: 1.7em;
+    font-family: "arial";
+}
+
+#post-card{
+    border-left: 0;
+    border-right:0;
+    height: fit-content;
+}
+#logo{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 2em;
+    font-weight: bolder;
+
+    
 }
 
 
@@ -50,11 +92,20 @@ body{
 }
 
 /* for the show profile */
+#profile-col{
+    
+}
+
+
+
 #accInfo
 {
     font-family: 'Times New Roman', Times, serif;
     text-align: center;
 }
+
+
+
 #top-info
 {
     border-style: solid;

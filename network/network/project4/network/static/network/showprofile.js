@@ -16,11 +16,11 @@ function ShowProfile()
     
                 <div class = "col-6">
                 </div>
-                <div class="col">
+                <div class="col" id="profile-col">
                     <h1>User: {profile.username}</h1>
                     <h3>Email: {profile.email}</h3>
                     <h3>Followers:{profile.followers_count}</h3>
-                
+
                 </div>
          
             </div>
@@ -34,19 +34,17 @@ function ShowProfile()
           {post && post.map((item, index) => (
               <div className="individual-post" key={item.postid}>
                   {console.log(item)}
-                  <div className="card">
-                   
+                  <div className="card " id="post-card">          
                       <div className="card-body">
-                          <h5 className="card-title">{item.heading}</h5>
-                          <p className="card-text text-start">{item.user}</p>
-                          <p className="card-text">{item.description}</p>
+                          <p className="card-text text-start" id = "username">{profile.username}</p>
+                          <p className="card-text" id = "description">{item.description}</p>
                           <div className="likeboxArea">
-                       
-                              <p className="card-text small">{item.timestamp}</p>
+                          <LikeButton PostID={item.id} amountofLikes={item.likes} />
+                              <p className="card-text small" id="timestamp" >{item.timestamp}</p>
                           </div>
                       </div>
                   </div>
-              </div>       
+              </div>     
           ))}
   
       </div>

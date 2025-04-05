@@ -57,14 +57,14 @@ function ShowPost() {
       <div className="main-content">
         {posts.posts && posts.posts.map(post => (
           <div className="individual-post" key={post.id}>
-            <div className="card">
+            <div className="card" id="post-card">
               <div className="card-body">
                 <h5 className="card-title">{post.heading}</h5>
-                <p className="card-text text-start">{post.user}</p>
-                <p className="card-text">{post.description}</p>
+                <p className="card-text text-start" id="username">{post.user}</p>
+                <p className="card-text" id="description">{post.description}</p>
                 <div className="likeboxArea">
                   <LikeButton PostID={post.id} amountofLikes={post.likes} />
-                  <p className="card-text small">{post.timestamp}</p>
+                  <p className="card-text small" id="timestamp">{post.timestamp}</p>
                 </div>
               </div>
             </div>
@@ -72,7 +72,7 @@ function ShowPost() {
         ))}
   
         {/* Pagination */}
-        <div className="pagination">
+        <div className="pagination justify-content-center " >
           <nav aria-label="Page navigation">
             <ul className="pagination justify-content-center">
               {/* Previous Button */}

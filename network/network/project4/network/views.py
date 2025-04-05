@@ -304,6 +304,6 @@ def new_post(request):
         like.postID = create_post
         like.save()
  
-        return JsonResponse({"success":"True"}, status =200 )
+        return HttpResponseRedirect(reverse("index"))
     else: 
         return JsonResponse({"error":"problem handling request"}, status = 300)
