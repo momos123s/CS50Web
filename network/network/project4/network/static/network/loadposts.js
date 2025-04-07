@@ -10,7 +10,7 @@ function LikeButton({ PostID, amountofLikes }) {
         //stores server data 
         setLike(update)
         console.log(update)
-        return likes;
+        return update;
     }
     catch(error){
         console.error("issues handling the click of like button")
@@ -22,6 +22,7 @@ function LikeButton({ PostID, amountofLikes }) {
 React.useEffect(() => {
     if (likes !== null) {
         console.log("Updated likes from server:", likes);
+     
     }
 }, [likes]);
 
@@ -32,7 +33,7 @@ React.useEffect(() => {
                 {setAmount(prev => prev + 1);
                 Clicklike().then(updatedLikes => console.log("Updated like data:", updatedLikes));
 
-                 }}> ❤️{amount} </p>
+                 }}> ❤️{likes && likes.amount !== undefined ? likes.amount : amount}</p>
         </div>
     );
 }
