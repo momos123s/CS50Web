@@ -69,30 +69,34 @@ def follow(request):
 @login_required
 @csrf_exempt
 def follow_view(request):
+
+    
     
     if request.method == "GET":          
         follow_posts(request)
         return render(request, "network/follow.html")
     elif request.method == "PUT":
-        #get the user to follows id
+        #get the user to follows username
         data = json.loads(request.body)
-        followersid = int(data.get("followid"))
+        followersUsername= data.get("followid")
+        
         #check if user has profile
-        user2follow = User.objects.get(id = followersid) 
+        user2follow = User.objects.get(username = followersUsername) 
         profile = Profile.objects.get(user = request.user.id)
+
         #follow the request user if they are not followed
-        if  not profile.following.filter( id = user2follow.pk).exists() and not followersid == request.user.id :
+        if  not profile.following.filter( id = user2follow.pk).exists() and followersUsername != request.user.username :
             profile.following.add(user2follow)
             print("you are now following user")
-            return JsonResponse({"success":"user was followed"})
+            return JsonResponse({"status":"user was followed"})
         #unfollow requested user if followed 
         elif profile.following.filter(id = user2follow.pk).exists():
             profile.following.remove(user2follow)
             print("user was unfollowed")
-            return JsonResponse({"success":"user has been unfollowed"})
+            return JsonResponse({"status":"user has been unfollowed"})
         #error message incase something goes wrong
         else:
-            JsonResponse({"error":"something went wrong"})
+            return JsonResponse({"status":"you cannot follow yourself! or something else went worng"})
        
     else:
         return JsonResponse({"error":"An unknow error occured"})

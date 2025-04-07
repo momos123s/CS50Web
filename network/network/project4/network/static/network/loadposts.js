@@ -37,7 +37,17 @@ React.useEffect(() => {
     );
 }
 
+// follows users 
+function FollowClick({username}){
 
+  update_follows(username);
+  return (
+    
+    <div class="alert alert-success" role="alert">
+      successfully following {username}
+    </div>
+  );
+}
 
 
 function ShowPost() {
@@ -56,11 +66,13 @@ function ShowPost() {
     return (
       <div className="main-content">
         {posts.posts && posts.posts.map(post => (
+          
           <div className="individual-post" key={post.id}>
+            {console.log(post)}
             <div className="card" id="post-card">
               <div className="card-body">
                 <h5 className="card-title">{post.heading}</h5>
-                <p className="card-text text-start" id="username">{post.user}</p>
+                <p className="card-text text-start" id="username" onClick={() => FollowClick({username:post.user})}>{post.user}</p>
                 <p className="card-text" id="description">{post.description}</p>
                 <div className="likeboxArea">
                   <LikeButton PostID={post.id} amountofLikes={post.likes} />
@@ -109,4 +121,4 @@ function ShowPost() {
 
 
 
-
+window.update_follows = update_follows;

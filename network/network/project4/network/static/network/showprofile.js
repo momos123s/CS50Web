@@ -31,7 +31,7 @@ function ShowProfile()
                   {console.log(item)}
                   <div className="card " id="post-card">          
                       <div className="card-body">
-                          <p className="card-text text-start" id = "username">{profile.username}</p>
+                      <p className="card-text text-start" id = "username">{item.user}</p>
                           <p className="card-text" id = "description">{item.description}</p>
                           <div className="likeboxArea">
                           <LikeButton PostID={item.id} amountofLikes={item.likes} />

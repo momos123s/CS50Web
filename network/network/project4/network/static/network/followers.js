@@ -17,7 +17,7 @@ function FollowersPosts() {
                   {console.log(post)}
                   <div className="card " id="post-card">          
                       <div className="card-body">
-                          <p className="card-text text-start" id = "username">{post.user}</p>
+                      <p className="card-text text-start" id="username" onClick={() => FollowClick({username:post.user})}>{post.user}</p>
                           <p className="card-text" id = "description">{post.description}</p>
                           <div className="likeboxArea">
                           <LikeButton PostID={post.id} amountofLikes={post.likes} />

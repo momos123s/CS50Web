@@ -47,7 +47,8 @@ function update_follows(followid) {
     })
     
    .then(response => response.json())
-   .then( result => {console.log(result)})
+   .then( result => {alert(result.status)})
+
 }
 
 
@@ -58,7 +59,7 @@ function update_follows(followid) {
 function new_post (description)
 {
 
-    
+try{
     fetch(
     '/new',{
         method:"POST",
@@ -72,12 +73,15 @@ function new_post (description)
         })
     }
     )
-    .then(Response => Response.json())
-    .then(result => {
-        console.log(result)
-    })
-    console.log("successful post js");
+        alert("your post was successful");
+        
+}
+catch(error){
+    return alert("something went wrong whilst trying to upload")
+}
+   
 }
 window.new_post = new_post;
+window.update_follows = update_follows;
 window.get_api = get_api;
 window.update_likes = update_likes;
