@@ -3,9 +3,9 @@ from django.contrib.auth.models import AbstractUser
 
 class Person(AbstractUser):
     cellPhone = models.CharField(null=False,max_length=120, verbose_name="cellphone number")
-    location = models.GenericIPAddressField(protocol="both",unpack_ipv4=True, verbose_name="geolocation ip address")
-    dateOfBirth = models.DateField(null=False, verbose_name="date of birth")
-    Job = models.CharField(null=False, default="unemployed", max_length=256, verbose_name="Job Title" )
+    location = models.CharField(max_length=100, blank=True, null=True)
+    dateOfBirth = models.DateField(null=True, verbose_name="date of birth")
+    Job = models.CharField(null=True, default="unemployed", max_length=256, verbose_name="Job Title" )
     EDUCATION_CHOICES = [
         ("highschool", "highschool"),
         ("bachelors", "bachelors"),
@@ -13,9 +13,9 @@ class Person(AbstractUser):
         ("phd", "phd"),
         ("other", "other"),
     ]
-    education = models.CharField(null=False, choices=EDUCATION_CHOICES, max_length=256, verbose_name="education level")
-    isValidated = models.BooleanField(default=False,null=False, verbose_name="cellphone validated")
-    isSubscribed = models.BooleanField(default=False,null=False, verbose_name="user subscription")
+    education = models.CharField(null=True, choices=EDUCATION_CHOICES, max_length=256, verbose_name="education level")
+    isValidated = models.BooleanField(default=False,null=True, verbose_name="cellphone validated")
+    isSubscribed = models.BooleanField(default=False,null=True, verbose_name="user subscription")
 
  #   def __str__(self):
     #    return f"{self.username} - {self.cellPhone} - {self.location} - {self.dateOfBirth} - {self.Job} - {self.education} - {self.isValidated} - {self.isSubscribed}"
@@ -56,7 +56,7 @@ class MediaFiles(models.Model):
     fileName = models.CharField(max_length=256, null=False, verbose_name="File name")
     fileData = models.FileField(upload_to="media/")
     fileDate = models.DateTimeField(auto_now=True, null=False, verbose_name="file upload date")
-    uploader = models.ForeignKey( Person, on_delete=models.CASCADE, verbose_name="uploader")
+    uploader = models.ForeignKey( Person, on_delete=models.CASCADE, verbose_name="uploader", related_name="uploader")
     
     def __str__(self):
         return f"{self.fileName} - {self.fileData} - {self.fileDate} - {self.uploader.username}"
@@ -65,7 +65,7 @@ class Match(models.Model):
     person1 = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="person1")
     person2 = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="person2")
     matchDate = models.DateTimeField(auto_now=True, null=False, verbose_name="match date")
-    isMatched = models.BooleanField(default=False)
+    isMatched = models.BooleanField(default=True)
     isBlocked = models.BooleanField(default=False)
     
     def __str__(self):
@@ -73,7 +73,7 @@ class Match(models.Model):
 
 class Messages(models.Model):
     MessageID = models.BigAutoField(primary_key=True, null=False, unique=True, verbose_name="message ID")
-    matchID = models.ForeignKey(Match, on_delete=models.CASCADE, verbose_name="match ID")
+    matchID = models.ForeignKey(Match, on_delete=models.CASCADE, verbose_name="match ID", related_name="matched_couple")
     message = models.TextField(null=False, verbose_name="Message")
     timestamp = models.DateTimeField(null=False, auto_now=True,verbose_name="time of message")
     sender = models.ForeignKey(Person, on_delete=models.CASCADE,related_name="sender")
@@ -82,7 +82,7 @@ class Messages(models.Model):
     def __str__(self):
         return f"{self.matchID} - {self.message} - {self.timestamp} - {self.sender.username} - {self.reciever.username} - {self.file}"
 class Sexuality(models.Model):
-    personID = models.ForeignKey(Person, on_delete=models.CASCADE)
+    personID = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="humanSex")
     SexualityID = models.BigAutoField(primary_key=True, null=False, unique=True)
     SEX_CHOICES = [
         ("female", "female"),
@@ -104,7 +104,7 @@ class Sexuality(models.Model):
     def __str__(self):
         return f"{self.personID.username} "
 class Hobbies_Intreasts(models.Model):
-    personID = models.ForeignKey(Person, on_delete=models.CASCADE,related_name="person")
+    personID = models.ForeignKey(Person, on_delete=models.CASCADE,related_name="doer")
     hobbiesID = models.BigAutoField(primary_key=True, null=False, unique=True)
     HOBBIES_CHOICES = [
         ("sports", "sports"),
@@ -128,7 +128,7 @@ class Hobbies_Intreasts(models.Model):
         return f"{self.personID.username} - {self.hobbies} - {self.hobbiesID}"
 class VisualAnalysis(models.Model):
     visualID = models.BigAutoField(primary_key=True, null=False, unique=True, verbose_name="visual ID")
-    person = models.ForeignKey(Person, on_delete=models.CASCADE,verbose_name="persons looks")
+    person = models.ForeignKey(Person, on_delete=models.CASCADE,verbose_name="personslooks" ,related_name="personsAppearance")
     height = models.PositiveIntegerField(null=False ,verbose_name="persons height")
     weight = models.PositiveIntegerField(null=False, verbose_name="users weight")
     RACE_CHOICES = [
@@ -151,13 +151,13 @@ class VisualAnalysis(models.Model):
     def __str__(self):
         return f"{self.visualID} - {self.person.username} - {self.height} - {self.weight} - {self.race} - {self.bodyType} - {self.visualID}"
 class PreferenceAnalysis(models.Model):
-    personID = models.ForeignKey(Person, on_delete=models.CASCADE)
+    personID = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="preferer")
     PreferenceID = models.BigAutoField(primary_key=True, null=False, unique=True)
 
 
 
 class Profile(models.Model):
-    personID = models.ForeignKey( Person, on_delete=models.CASCADE,related_name="person")
+    personID = models.ForeignKey( Person, on_delete=models.CASCADE,related_name="profile")
     messageIDs = models.ManyToManyField( Messages)
     files = models.ManyToManyField(MediaFiles)
     visual = models.ForeignKey(VisualAnalysis, on_delete=models.CASCADE)

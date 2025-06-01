@@ -44,7 +44,8 @@ def logout_view(request):
 
 
 
-
+def register_view(request):
+    return 
 #regiser view 
 """
 user must fill the following fields:
